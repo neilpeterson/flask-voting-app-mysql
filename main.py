@@ -11,17 +11,47 @@ app.config['MYSQL_PASSWORD'] = 'Monkeyskip76'
 app.config['MYSQL_DB'] = 'azurevote'
 mysql = MySQL(app)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template("index.html")
 
-@app.route('/insert', methods=['POST'])
-def insert():
-    vote = request.form['vote']
-    cur = mysql.connection.cursor()
-    cur.execute('''INSERT INTO azurevote (voteid, votevalue) VALUES (%s, %s)''', (random.randint(5,3000), vote))
-    mysql.connection.commit()
-    return render_template("index.html")
+    if request.method == 'GET':
+
+        # Get current values
+        cur = mysql.connection.cursor()
+        cur.execute('''Select votevalue, count(votevalue) as count From azurevote.azurevote
+        group by votevalue''')
+        results = cur.fetchall()
+
+        for i in results:
+            if i[0] == 'cats':
+                cats = i[1]
+            elif i[0] == 'dogs':
+                dogs = i[1]
+
+        # Return index with values
+        return render_template("index.html", cats=cats, dogs=dogs)
+
+    elif request.method == 'POST':
+
+        # Insert vote result into DB
+        vote = request.form['vote']
+        cur = mysql.connection.cursor()
+        cur.execute('''INSERT INTO azurevote (voteid, votevalue) VALUES (%s, %s)''', (random.randint(5,3000), vote))
+        mysql.connection.commit()
+
+        # Get current values
+        cur.execute('''Select votevalue, count(votevalue) as count From azurevote.azurevote
+        group by votevalue''')
+        results = cur.fetchall()
+
+        for i in results:
+            if i[0] == 'cats':
+                cats = i[1]
+            elif i[0] == 'dogs':
+                dogs = i[1]
+            
+        # Return inndex with new count
+        return render_template("index.html", cats=cats, dogs=dogs)
 
 @app.route('/results')
 def results():

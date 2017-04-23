@@ -12,14 +12,15 @@
 </head>
 <body>
     <div id="container">
-        <form id="form" name="form" action="/insert" method="post"><center>
+        <form id="form" name="form" action="/"" method="post"><center>
         <div id="logo">Azure Voting App</div>
         <div id="space"></div>
         <div id="form">
         <button name="vote" value="cats" onclick="send()" class="button button1">Cats</button>
         <button name="vote" value="dogs" onclick="send()" class="button button2">Dogs</button>
         </form>
-        </div>
+        </div>     
     </div>
+    <div id="results"> Cats - {{ cats }} | Dogs - {{ dogs }} </div>  
 </body>
 </html>

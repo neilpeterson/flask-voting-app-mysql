@@ -38,6 +38,15 @@ div#form {
     border-bottom: 1px solid black;
 }
 
+div#results {
+    display:block;
+    margin: 0 auto;
+    width: 500px;
+    text-align: center;
+    font-size:30px;
+    font-family:Calibri;  
+}
+
 .button {
     background-color: #4CAF50; /* Green */
     border: none;
