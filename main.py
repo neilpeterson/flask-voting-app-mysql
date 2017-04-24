@@ -1,6 +1,4 @@
 from flask import Flask, request, render_template
-#from flask.ext.mysqldb import MySQL
-#from flask_mysql import MySQL
 from flaskext.mysql import MySQL
 import random
 import sys
@@ -9,7 +7,7 @@ app = Flask(__name__)
 
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_PASSWORD'] = 'Monkeyskip76'
 app.config['MYSQL_DATABASE_DB'] = 'azurevote'
 mysql.init_app(app)
 connection = mysql.connect()
@@ -47,7 +45,8 @@ def index():
             # Insert vote result into DB
             vote = request.form['vote']
             cursor.execute('''INSERT INTO azurevote (voteid, votevalue) VALUES (%s, %s)''', (random.randint(5,3000), vote))
-
+            connection.commit()
+            
             # Get current values
             cursor.execute('''Select votevalue, count(votevalue) as count From azurevote.azurevote
             group by votevalue''')
