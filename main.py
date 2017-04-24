@@ -1,15 +1,19 @@
 from flask import Flask, request, render_template
-from flask.ext.mysqldb import MySQL
+#from flask.ext.mysqldb import MySQL
+#from flask_mysql import MySQL
+from flaskext.mysql import MySQL
 import random
 import sys
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'azurevote'
-mysql = MySQL(app)
+mysql = MySQL()
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_DB'] = 'azurevote'
+mysql.init_app(app)
+connection = mysql.connect()
+cursor = connection.cursor()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -17,13 +21,10 @@ def index():
     cats = 0
     dogs = 0
 
-    if request.method == 'GET':
-
-        # Get current values
-        cur = mysql.connection.cursor()
-        cur.execute('''Select votevalue, count(votevalue) as count From azurevote.azurevote
+    if request.method == 'GET':       
+        cursor.execute('''Select votevalue, count(votevalue) as count From azurevote.azurevote
         group by votevalue''')
-        results = cur.fetchall()
+        results = cursor.fetchall()
 
         for i in results:
             if i[0] == 'cats':
@@ -37,23 +38,20 @@ def index():
     elif request.method == 'POST':
 
         if request.form['vote'] == 'reset':
-            cur = mysql.connection.cursor()
-            cur.execute('''Delete FROM azurevote''')
-            mysql.connection.commit()
+            cursor.execute('''Delete FROM azurevote''')
+            connection.commit()
 
             # Return inndex with new count
             return render_template("index.html", cats=cats, dogs=dogs)
         else:
             # Insert vote result into DB
             vote = request.form['vote']
-            cur = mysql.connection.cursor()
-            cur.execute('''INSERT INTO azurevote (voteid, votevalue) VALUES (%s, %s)''', (random.randint(5,3000), vote))
-            mysql.connection.commit()
+            cursor.execute('''INSERT INTO azurevote (voteid, votevalue) VALUES (%s, %s)''', (random.randint(5,3000), vote))
 
             # Get current values
-            cur.execute('''Select votevalue, count(votevalue) as count From azurevote.azurevote
+            cursor.execute('''Select votevalue, count(votevalue) as count From azurevote.azurevote
             group by votevalue''')
-            results = cur.fetchall()
+            results = cursor.fetchall()
 
             for i in results:
                 if i[0] == 'cats':
@@ -67,8 +65,8 @@ def index():
 @app.route('/results')
 def results():
     cur = mysql.connection.cursor()
-    cur.execute('''Select * FROM azurevote''')
-    rv = cur.fetchall()
+    cursor.execute('''Select * FROM azurevote''')
+    rv = cursor.fetchall()
     return str(rv)
 
 if __name__ == "__main__":
