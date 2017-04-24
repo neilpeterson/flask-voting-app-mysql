@@ -21,14 +21,13 @@ div#logo {
     text-align: right;
     font-size:30px;
     font-family:Calibri;  
-    border-bottom: 1px solid black;   
+    /*border-bottom: 1px solid black;*/   
 }
 
 div#form {
     padding: 20px;
     padding-right: 20px;
     padding-top: 20px;
-
     display:block;
     margin: 0 auto;
     width: 500px;
@@ -36,6 +35,7 @@ div#form {
     font-size:30px;
     font-family:Calibri;  
     border-bottom: 1px solid black;
+    border-top: 1px solid black;
 }
 
 div#results {
