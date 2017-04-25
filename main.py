@@ -7,8 +7,9 @@ app = Flask(__name__)
 
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'Monkeyskip76'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'Password12'
 app.config['MYSQL_DATABASE_DB'] = 'azurevote'
+app.config['MYSQL_DATABASE_HOST'] = '10.0.0.5'
 mysql.init_app(app)
 connection = mysql.connect()
 cursor = connection.cursor()
