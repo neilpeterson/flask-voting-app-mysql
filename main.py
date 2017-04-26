@@ -11,8 +11,6 @@ app.config['MYSQL_DATABASE_PASSWORD'] = 'Password12'
 app.config['MYSQL_DATABASE_DB'] = 'azurevote'
 app.config['MYSQL_DATABASE_HOST'] = '10.0.0.5'
 mysql.init_app(app)
-connection = mysql.connect()
-cursor = connection.cursor()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -20,7 +18,10 @@ def index():
     cats = 0
     dogs = 0
 
-    if request.method == 'GET':       
+    connection = mysql.connect()
+    cursor = connection.cursor()
+
+    if request.method == 'GET':   
         cursor.execute('''Select votevalue, count(votevalue) as count From azurevote.azurevote
         group by votevalue''')
         results = cursor.fetchall()
@@ -64,7 +65,8 @@ def index():
 
 @app.route('/results')
 def results():
-    cur = mysql.connection.cursor()
+    connection = mysql.connect()
+    cursor = connection.cursor()
     cursor.execute('''Select * FROM azurevote''')
     rv = cursor.fetchall()
     return str(rv)
