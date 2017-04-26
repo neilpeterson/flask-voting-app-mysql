@@ -1,0 +1,16 @@
+#cloud-config
+package_upgrade: true
+packages:
+runcmd:
+  - echo "mysql-server mysql-server/root_password password Password12" | sudo debconf-set-selections
+  - echo "mysql-server mysql-server/root_password_again password Password12" | sudo debconf-set-selections
+  - sudo apt-get -y install mysql-server
+  - mysqladmin -u root -pPassword12 create azurevote
+  - sudo sed -i 's/bind-address/#bind-address/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+  - mysql -u root -pPassword12 -Bse "CREATE USER 'dbuser'@'localhost' IDENTIFIED BY 'Password12';"
+  - mysql -u root -pPassword12 -Bse "GRANT ALL PRIVILEGES ON *.* TO 'dbuser'@'localhost' WITH GRANT OPTION;"
+  - mysql -u root -pPassword12 -Bse "CREATE USER 'dbuser'@'%' IDENTIFIED BY 'Password12';"
+  - mysql -u root -pPassword12 -Bse "GRANT ALL PRIVILEGES ON *.* TO 'dbuser'@'%' WITH GRANT OPTION;"
+  - mysql -u root -pPassword12 -Bse "FLUSH PRIVILEGES;"
+  - mysql -u root -pPassword12 -Bse 'CREATE TABLE `azurevote`.`azurevote` (`voteid` INT NOT NULL AUTO_INCREMENT,`votevalue` VARCHAR(45) NULL,PRIMARY KEY (`voteid`));'
+  - sudo service mysql restart
