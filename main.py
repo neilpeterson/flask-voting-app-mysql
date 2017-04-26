@@ -1,23 +1,39 @@
 from flask import Flask, request, render_template
 from flaskext.mysql import MySQL
 import random
+import socket
 import sys
 
 app = Flask(__name__)
 
+# Load configurations
+app.config.from_pyfile('config_file.cfg')
+button1 =       app.config['VOTE1VALUE']  
+button2 =       app.config['VOTE2VALUE']
+title =         app.config['TITLE']
+
+# MySQL configurations
+app.config['MYSQL_DATABASE_USER']
+app.config['MYSQL_DATABASE_PASSWORD']
+app.config['MYSQL_DATABASE_DB']
+app.config['MYSQL_DATABASE_HOST']
+
+# MySQL Object
 mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] = 'dbuser'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'Password12'
-app.config['MYSQL_DATABASE_DB'] = 'azurevote'
-app.config['MYSQL_DATABASE_HOST'] = '10.0.0.5'
 mysql.init_app(app)
+
+# Change title to host name to demo NLB
+if app.config['SHOWHOST'] == "true":
+    title = socket.gethostname()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
-    cats = 0
-    dogs = 0
+    # Vote tracking
+    vote1 = 0
+    vote2 = 0
 
+    # MySQL connection
     connection = mysql.connect()
     cursor = connection.cursor()
 
@@ -26,27 +42,29 @@ def index():
         group by votevalue''')
         results = cursor.fetchall()
 
+        # Parse results
         for i in results:
-            if i[0] == 'cats':
-                cats = i[1]
-            elif i[0] == 'dogs':
-                dogs = i[1]              
+            if i[0] == app.config['VOTE1VALUE']:
+                vote1 = i[1]
+            elif i[0] == app.config['VOTE2VALUE']:
+                vote2 = i[1]              
 
         # Return index with values
-        return render_template("index.html", cats=cats, dogs=dogs)
+        return render_template("index.html", value1=vote1, value2=vote2, button1=button1, button2=button2, title=title)
 
     elif request.method == 'POST':
 
         if request.form['vote'] == 'reset':
+            
+            # Empty table and return results
             cursor.execute('''Delete FROM azurevote''')
             connection.commit()
-
-            # Return inndex with new count
-            return render_template("index.html", cats=cats, dogs=dogs)
+            return render_template("index.html", value1=vote1, value2=vote2, button1=button1, button2=button2, title=title)
         else:
+
             # Insert vote result into DB
             vote = request.form['vote']
-            cursor.execute('''INSERT INTO azurevote (voteid, votevalue) VALUES (%s, %s)''', (random.randint(5,3000), vote))
+            cursor.execute('''INSERT INTO azurevote (votevalue) VALUES (%s)''', (vote))
             connection.commit()
             
             # Get current values
@@ -54,14 +72,15 @@ def index():
             group by votevalue''')
             results = cursor.fetchall()
 
+            # Parse results
             for i in results:
-                if i[0] == 'cats':
-                    cats = i[1]
-                elif i[0] == 'dogs':
-                    dogs = i[1]
+                if i[0] == app.config['VOTE1VALUE']:
+                    vote1 = i[1]
+                elif i[0] == app.config['VOTE2VALUE']:
+                    vote2 = i[1]         
                 
-            # Return inndex with new count
-            return render_template("index.html", cats=cats, dogs=dogs)
+            # Return results
+            return render_template("index.html", value1=vote1, value2=vote2, button1=button1, button2=button2, title=title)
 
 @app.route('/results')
 def results():
