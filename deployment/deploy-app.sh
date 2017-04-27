@@ -1,23 +1,33 @@
 #!/bin/bash
 
-resourceGroup="myAppTest2"
+# Keyvault values
+keyvault=mykeyvaulttwo
+keyvaultrg=myKeyVaultRG
+
+# VM values
+resourceGroup="myResourceGroup2"
 vmFront="vmfront2"
 vmBack="vmback2"
 
-# Create a resource group
+# Create Keyvault resource group
+az group create --name $keyvaultrg --location westus
+
+# Create Keyvault and secret
+az keyvault create --name $keyvault --resource-group $keyvaultrg --enabled-for-deployment
+az keyvault secret set --vault-name $keyvault --name 'SQLPassword' --value 'Password12' --encoding base64
+
+# Get keyvault secret id
+secret=$(az keyvault secret list-versions --vault-name $keyvault --name SQLPassword --query "[?attributes.enabled].id" --output tsv)
+vm_secret=$(az vm format-secret --secret "$secret")
+
+# Create VM resource group
 az group create --name $resourceGroup --location westus
-
-# Create key vault
-az keyvault create --name myKeyVault --resource-group $resourceGroup
-
-# Create secret
-az keyvault secret set --vault-name myKeyVault --name 'SQLPassword' --value 'Password12'
 
 # Create a virtual network
 az network vnet create --resource-group $resourceGroup --name myVnet --subnet-name mySubnet
 
 # Create VM front
-az vm create --resource-group $resourceGroup --name $vmFront --image UbuntuLTS --vnet-name myVnet --generate-ssh-keys --custom-data cloud-init-front.txt
+az vm create --resource-group $resourceGroup --name $vmFront --image UbuntuLTS --vnet-name myVnet --generate-ssh-keys --custom-data cloud-init-front.txt --secrets "$vm_secret"
 
 # Open port 80
 az vm open-port --port 80 --resource-group $resourceGroup --name $vmFront
