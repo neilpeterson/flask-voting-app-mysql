@@ -2,19 +2,19 @@
 
 # Keyvault values
 keyvault=mykeyvaulttwo
-keyvaultrg=myKeyVaultRG
+keyvaultrg=myKeyVaultRG2
 
 # VM values
-resourceGroup="myResourceGroup2"
-vmFront="vmfront2"
-vmBack="vmback2"
+resourceGroup="myResourceGroup"
+vmFront="vmfront"
+vmBack="vmback"
 
 # Create Keyvault resource group
 az group create --name $keyvaultrg --location westus
 
 # Create Keyvault and secret
 az keyvault create --name $keyvault --resource-group $keyvaultrg --enabled-for-deployment
-az keyvault secret set --vault-name $keyvault --name 'SQLPassword' --value 'Password12' --encoding base64
+az keyvault secret set --vault-name $keyvault --name 'sqlpassword' --value 'Password12'
 
 # Get keyvault secret id
 secret=$(az keyvault secret list-versions --vault-name $keyvault --name SQLPassword --query "[?attributes.enabled].id" --output tsv)
@@ -27,7 +27,7 @@ az group create --name $resourceGroup --location westus
 az network vnet create --resource-group $resourceGroup --name myVnet --subnet-name mySubnet
 
 # Create VM front
-az vm create --resource-group $resourceGroup --name $vmFront --image UbuntuLTS --vnet-name myVnet --generate-ssh-keys --custom-data cloud-init-front.txt --secrets "$vm_secret"
+az vm create --resource-group $resourceGroup --name $vmFront --image UbuntuLTS --vnet-name myVnet --generate-ssh-keys --custom-data cloud-init-front.txt --secrets $vm_secret
 
 # Open port 80
 az vm open-port --port 80 --resource-group $resourceGroup --name $vmFront
