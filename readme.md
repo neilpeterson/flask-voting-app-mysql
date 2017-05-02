@@ -8,6 +8,15 @@ Simple Flask app for demonstrating Azure IaaS architectural configurations. The 
 
 Sample deployment scripts and cloud-init files are found in the deployment folder.
 
+Run these commands to deploy to your Azure subscription.
+
+```
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/cloud-init-front.txt > cloud-init-front.txt
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/cloud-init-back.txt > cloud-init-back.txt
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/deploy-app-secured.sh > deploy-app-secured.sh
+bash ./deploy-app-secured.sh
+``` 
+
 When deploying, the password value can be stored in Azure Key vault for maximum security. This configuration is not demonstrated in the deployment scripts. 
 
 ## Configuration
