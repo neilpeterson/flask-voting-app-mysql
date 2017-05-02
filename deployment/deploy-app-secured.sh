@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # VM values
-resourceGroup="myResourceGroup4"
+resourceGroup="myResourceGroup"
 vmFront="vmfront"
 vmBack="vmback"
 
