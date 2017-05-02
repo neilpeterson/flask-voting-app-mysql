@@ -2,6 +2,8 @@
 
 Simple Flask app for demonstrating Azure IaaS architectural configurations. The voting app consists of a Flask app and a MySQL database.
 
+![](./vote.png)
+
 ## Deployment
 
 Sample deployment scripts and cloud-init files are found in the deployment folder.
@@ -32,8 +34,3 @@ VOTE1VALUE = 'Cats'
 VOTE2VALUE = 'Dogs'
 SHOWHOST = 'false'
 ```
-
-## Demo
-
-![](./vote.png)
-
