@@ -35,3 +35,5 @@ SHOWHOST = 'false'
 
 ## Demo
 
+![](./vote.png)
+
