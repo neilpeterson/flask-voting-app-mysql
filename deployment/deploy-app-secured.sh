@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # VM values
-resourceGroup="myResourceGroup"
+resourceGroup="myResourceGroup4"
 vmFront="vmfront"
 vmBack="vmback"
 
@@ -28,4 +28,4 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name myBackendN
 az network vnet subnet create --address-prefix 10.0.1.0/24 --name myBackendSubnet --resource-group $resourceGroup --vnet-name myVnet --network-security-group myBackendNSG
 
 # Create VM back
-az vm create --resource-group $resourceGroup --name $vmBack --image UbuntuLTS --public-ip-address "" --generate-ssh-keys --custom-data cloud-init-back.txt
+az vm create --resource-group $resourceGroup --name $vmBack --image UbuntuLTS --public-ip-address "" --nsg "" --generate-ssh-keys --custom-data cloud-init-back.txt
