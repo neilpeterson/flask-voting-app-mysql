@@ -28,7 +28,8 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name myBackendN
 az network vnet subnet create --address-prefix 10.0.1.0/24 --name myBackendSubnet --resource-group $resourceGroup --vnet-name myVnet --network-security-group myBackendNSG
 
 # Create VM back
-az vm create --resource-group $resourceGroup --name $vmBack --image UbuntuLTS --public-ip-address "" --nsg "" --generate-ssh-keys
+# az vm create --resource-group $resourceGroup --name $vmBack --image UbuntuLTS --public-ip-address "" --nsg "" --generate-ssh-keys
+az vm create --resource-group $resourceGroup --name $vmBack --image UbuntuLTS  --generate-ssh-keys
 
 # Configure back
-az vm extension set --resource-group $resourceGroup --vm-name $vmBack --name customScript --publisher Microsoft.Azure.Extensions --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/test-extension/master/test.sh"],"commandToExecute": "./test.sh"}'
+az vm extension set --resource-group $resourceGroup --vm-name $vmBack --name customScript --publisher Microsoft.Azure.Extensions --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/custom-script/vote-app-back.sh"],"commandToExecute": "./vote-app-back.sh"}'
