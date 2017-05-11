@@ -12,4 +12,4 @@ sudo git clone https://github.com/neilpeterson/flask-voting-app.git /opt/vote-ap
 sudo cp /opt/vote-app/deployment/custom-script/default /etc/nginx/sites-available/
 sudo nginx -s reload
 
-python /opt/vote-app/main.py
+# python /opt/vote-app/main.py
