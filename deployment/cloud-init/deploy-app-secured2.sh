@@ -1,9 +1,10 @@
+
 #!/bin/bash
 
 # VM values
-resourceGroup="myResourceGroup6"
-vmFront="vmfront6"
-vmBack="vmback6"
+resourceGroup="myResourceGroup"
+vmFront="vmfront"
+vmBack="vmback"
 
 # Create resource group
 az group create --name $resourceGroup --location westus
@@ -80,15 +81,8 @@ az vm create \
   --public-ip-address "" \
   --nsg "" \
   --image UbuntuLTS \
-  --generate-ssh-keys
-
-# configure back
-az vm extension set \
-  --resource-group $resourceGroup \
-  --vm-name $vmBack \
-  --name customScript \
-  --publisher Microsoft.Azure.Extensions \
-  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/custom-script/vote-app-back.sh"],"commandToExecute": "./vote-app-back.sh"}'
+  --generate-ssh-keys \
+  --custom-data cloud-init-back.txt
 
 # Create front-end
 az vm create \
@@ -99,10 +93,10 @@ az vm create \
   --nsg myNSGFrontEnd \
   --public-ip-address myFrontEndIP \
   --image UbuntuLTS \
-  --generate-ssh-keys
+  --generate-ssh-keys \
+  --custom-data cloud-init-front.txt
 
- 
- # Front-end NSG rule
+# Front-end NSG rule
  az network nsg rule create \
   --resource-group $resourceGroup \
   --nsg-name myNSGFrontEnd \
@@ -114,12 +108,4 @@ az vm create \
   --source-address-prefix "*" \
   --source-port-range "*" \
   --destination-address-prefix "*" \
-  --destination-port-range "80" 
-
-# configure front
-az vm extension set \
---resource-group $resourceGroup \
---vm-name $vmFront \
---name customScript \
---publisher Microsoft.Azure.Extensions \
---settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/custom-script/vote-app-front.sh"],"commandToExecute": "./vote-app-front.sh"}'
+  --destination-port-range "80"
