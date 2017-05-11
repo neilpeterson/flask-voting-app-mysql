@@ -1,3 +1,5 @@
+#!/bin/bash
+
 password=Password12
 
 sudo apt-get update
