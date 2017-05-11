@@ -1,8 +1,8 @@
 
-sudo apt-get update
-sudo apt-get install nginx
-sudo apt-get install python-pip
-sudo apt-get install libmysqlclient-dev
+sudo apt-get update -y
+sudo apt-get install nginx -y
+sudo apt-get install python-pip -y
+sudo apt-get install libmysqlclient-dev -y
 
 sudo pip install flask
 sudo pip install flask-mysql
