@@ -6,7 +6,7 @@ vmFront="vmfront2"
 vmBack="vmback2"
 
 # Create resource group
-az group create --name $resourceGroup --location westus
+az group create --name $resourceGroup --location eastus
 
 # Create a virtual network and front-end subnet
 az network vnet create \
