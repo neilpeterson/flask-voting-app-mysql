@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # VM values
-resourceGroup="myResourceGroup2"
-vmFront="vmfront2"
-vmBack="vmback2"
+resourceGroup="myResourceGroup"
+vmFront="vmfront"
+vmBack="vmback"
 
 # Create resource group
 az group create --name $resourceGroup --location eastus

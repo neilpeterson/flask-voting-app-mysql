@@ -17,9 +17,7 @@ sudo git clone https://github.com/neilpeterson/flask-voting-app.git /opt/vote-ap
 sudo cp /opt/vote-app/deployment/custom-script/default /etc/nginx/sites-available/
 sudo cp /opt/vote-app/deployment/custom-script/supervisor-config.conf /etc/supervisor/conf.d/
 
-# Reload supervisor
-sudo supervisorctl reread
-sudo supervisorctl update
+# Inital application start
 sudo supervisorctl start azurevote
 
 # Reload NGINX
