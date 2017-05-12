@@ -88,7 +88,7 @@ az vm extension set \
   --vm-name $vmBack \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
-  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/custom-script/vote-app-config-back.sh"],"commandToExecute": "./vote-app-config-back.sh"}'
+  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back.sh"],"commandToExecute": "./vote-app-config-back.sh"}'
 
 # Create front-end
 az vm create \
@@ -122,4 +122,4 @@ az vm extension set \
 --vm-name $vmFront \
 --name customScript \
 --publisher Microsoft.Azure.Extensions \
---settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/custom-script/vote-app-front.sh"],"commandToExecute": "./vote-app-front.sh"}'
+--settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-front.sh"],"commandToExecute": "./vote-app-front.sh"}'

@@ -19,9 +19,6 @@ sudo git clone https://github.com/neilpeterson/flask-voting-app.git /opt/vote-ap
 sudo cp /opt/vote-app/deployment/custom-script/default /etc/nginx/sites-available/
 sudo cp /opt/vote-app/deployment/custom-script/supervisor-config.conf /etc/supervisor/conf.d/
 
-# Update app config file
-sed -i "s/<password>/$1/g" /opt/vote-app/config_file.cfg
-
 # Initial application start
 sudo supervisorctl reread
 sudo supervisorctl update
