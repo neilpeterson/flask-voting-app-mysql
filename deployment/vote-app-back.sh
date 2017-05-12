@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Configuration values
-# In this example, value are provided as parameter data and secured in Azure custom script extension protected data.
 password=$1
 
 sudo apt-get update
