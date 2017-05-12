@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # VM values
-resourceGroup="myResourceGroup3"
-vmFront="vmfront3"
-vmBack="vmback3"
+resourceGroup="myResourceGroup2"
+vmFront="vmfront2"
+vmBack="vmback2"
 
 # Create resource group
 az group create --name $resourceGroup --location eastus
@@ -40,36 +40,10 @@ az network nsg rule create \
   --protocol Tcp \
   --direction Inbound \
   --priority 100 \
-  --source-address-prefix 10.0.1.0/24 \
-  --source-port-range "*" \
-  --destination-address-prefix "*" \
-  --destination-port-range "22" 
-
-az network nsg rule create \
-  --resource-group $resourceGroup \
-  --nsg-name myNSGBackEnd \
-  --name MySQL \
-  --access Allow \
-  --protocol Tcp \
-  --direction Inbound \
-  --priority 200 \
-  --source-address-prefix 10.0.1.0/24 \
-  --source-port-range "*" \
-  --destination-address-prefix "*" \
-  --destination-port-range "3306"
-
-az network nsg rule create \
-  --resource-group $resourceGroup \
-  --nsg-name myNSGBackEnd \
-  --name denyAll \
-  --access Deny \
-  --protocol Tcp \
-  --direction Inbound \
-  --priority 300 \
   --source-address-prefix "*" \
   --source-port-range "*" \
   --destination-address-prefix "*" \
-  --destination-port-range "*"
+  --destination-port-range "22" 
 
 # Create back-end vm
 az vm create \
@@ -77,7 +51,6 @@ az vm create \
   --name $vmBack \
   --vnet-name myVnet \
   --subnet mySubnetBackEnd \
-  --public-ip-address "" \
   --nsg "" \
   --image UbuntuLTS \
   --generate-ssh-keys
@@ -88,7 +61,7 @@ az vm extension set \
   --vm-name $vmBack \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
-  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back.sh"],"commandToExecute": "./vote-app-back.sh"}'
+  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back.sh"],"commandToExecute": "./vote-app-back.sh neillocal Password12"}'
 
 # Create front-end
 az vm create \
