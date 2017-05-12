@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# MySQL values
-password=TestPW123
-
 # VM values
-resourceGroup="myResourceGroup5"
-vmFront="vmfront5"
-vmBack="vmback5"
+resourceGroup="myResourceGroup2"
+vmFront="vmfront2"
+vmBack="vmback2"
 
 # Create resource group
 az group create --name $resourceGroup --location eastus
@@ -35,7 +32,7 @@ az network vnet subnet update \
   --name mySubnetBackEnd \
   --network-security-group myNSGBackEnd
 
-   az network nsg rule create \
+ az network nsg rule create \
   --resource-group $resourceGroup \
   --nsg-name myNSGBackEnd \
   --name SSH \
@@ -43,60 +40,36 @@ az network vnet subnet update \
   --protocol Tcp \
   --direction Inbound \
   --priority 100 \
-  --source-address-prefix "*" \
+  --source-address-prefix 10.0.1.0/24 \
   --source-port-range "*" \
   --destination-address-prefix "*" \
   --destination-port-range "22" 
 
-#  az network nsg rule create \
-#   --resource-group $resourceGroup \
-#   --nsg-name myNSGBackEnd \
-#   --name SSH \
-#   --access Allow \
-#   --protocol Tcp \
-#   --direction Inbound \
-#   --priority 100 \
-#   --source-address-prefix 10.0.1.0/24 \
-#   --source-port-range "*" \
-#   --destination-address-prefix "*" \
-#   --destination-port-range "22" 
+az network nsg rule create \
+  --resource-group $resourceGroup \
+  --nsg-name myNSGBackEnd \
+  --name MySQL \
+  --access Allow \
+  --protocol Tcp \
+  --direction Inbound \
+  --priority 200 \
+  --source-address-prefix 10.0.1.0/24 \
+  --source-port-range "*" \
+  --destination-address-prefix "*" \
+  --destination-port-range "3306"
 
-# az network nsg rule create \
-#   --resource-group $resourceGroup \
-#   --nsg-name myNSGBackEnd \
-#   --name MySQL \
-#   --access Allow \
-#   --protocol Tcp \
-#   --direction Inbound \
-#   --priority 200 \
-#   --source-address-prefix 10.0.1.0/24 \
-#   --source-port-range "*" \
-#   --destination-address-prefix "*" \
-#   --destination-port-range "3306"
-
-# az network nsg rule create \
-#   --resource-group $resourceGroup \
-#   --nsg-name myNSGBackEnd \
-#   --name denyAll \
-#   --access Deny \
-#   --protocol Tcp \
-#   --direction Inbound \
-#   --priority 300 \
-#   --source-address-prefix "*" \
-#   --source-port-range "*" \
-#   --destination-address-prefix "*" \
-#   --destination-port-range "*"
-
-# # Create back-end vm
-# az vm create \
-#   --resource-group $resourceGroup \
-#   --name $vmBack \
-#   --vnet-name myVnet \
-#   --subnet mySubnetBackEnd \
-#   --public-ip-address "" \
-#   --nsg "" \
-#   --image UbuntuLTS \
-#   --generate-ssh-keys
+az network nsg rule create \
+  --resource-group $resourceGroup \
+  --nsg-name myNSGBackEnd \
+  --name denyAll \
+  --access Deny \
+  --protocol Tcp \
+  --direction Inbound \
+  --priority 300 \
+  --source-address-prefix "*" \
+  --source-port-range "*" \
+  --destination-address-prefix "*" \
+  --destination-port-range "*"
 
 # Create back-end vm
 az vm create \
@@ -104,6 +77,7 @@ az vm create \
   --name $vmBack \
   --vnet-name myVnet \
   --subnet mySubnetBackEnd \
+  --public-ip-address "" \
   --nsg "" \
   --image UbuntuLTS \
   --generate-ssh-keys
@@ -114,8 +88,7 @@ az vm extension set \
   --vm-name $vmBack \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
-  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back2.sh"]}' \
-  --protected-settings '{"commandToExecute": "./vote-app-back.sh $password"}'
+  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/custom-script/vote-app-back.sh"],"commandToExecute": "./vote-app-back.sh"}'
 
 # Create front-end
 az vm create \
@@ -128,7 +101,8 @@ az vm create \
   --image UbuntuLTS \
   --generate-ssh-keys
 
-  # Front-end NSG rule
+ 
+ # Front-end NSG rule
  az network nsg rule create \
   --resource-group $resourceGroup \
   --nsg-name myNSGFrontEnd \
@@ -148,5 +122,4 @@ az vm extension set \
 --vm-name $vmFront \
 --name customScript \
 --publisher Microsoft.Azure.Extensions \
---settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-front.sh"]}'
---protected-settings '{"commandToExecute": "./vote-app-front.sh $password"}'
+--settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/custom-script/vote-app-front.sh"],"commandToExecute": "./vote-app-front.sh"}'

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-password=$1
+password=Password12
 
 # Install software
 sudo apt-get update -y

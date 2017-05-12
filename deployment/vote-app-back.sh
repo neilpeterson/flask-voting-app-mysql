@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration values
-password=$1
+password=Password12
 
 sudo apt-get update
 echo "mysql-server mysql-server/root_password password $password" | sudo debconf-set-selections

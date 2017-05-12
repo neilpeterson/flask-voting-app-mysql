@@ -2,7 +2,7 @@
 
 Simple Flask app for demonstrating Azure IaaS architectural configurations. The voting app consists of a Flask app and a MySQL database.
 
-![](.readme-media/vote-app.png)
+![](./readme-media/vote-app.png)
 
 ## Deployment
 
