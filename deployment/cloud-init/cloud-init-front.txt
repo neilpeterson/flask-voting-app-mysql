@@ -12,7 +12,7 @@ write_files:
       server {
         listen 80;
         location / {
-          proxy_pass http://localhost:5000;
+          proxy_pass http://localhost:8000;
           proxy_http_version 1.1;
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection keep-alive;
@@ -27,4 +27,7 @@ runcmd:
   - sudo git clone https://github.com/neilpeterson/flask-voting-app.git /opt/vote-app
   - sudo cp /opt/vote-app/deployment/custom-script/default /etc/nginx/sites-available/
   - sudo cp /opt/vote-app/deployment/custom-script/supervisor-config.conf /etc/supervisor/conf.d/
+  - sudo supervisorctl reread
+  - sudo supervisorctl update
   - sudo supervisorctl start azurevote
+  - sudo nginx -s reload
