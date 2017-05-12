@@ -17,7 +17,7 @@ az network vnet create \
   --subnet-prefix 10.0.1.0/24
 
 # Create back-end subnet
-  az network vnet subnet create \
+az network vnet subnet create \
   --resource-group $resourceGroup \
   --vnet-name myVnet \
   --name mySubnetBackEnd \
@@ -32,7 +32,7 @@ az network vnet subnet update \
   --name mySubnetBackEnd \
   --network-security-group myNSGBackEnd
 
- az network nsg rule create \
+az network nsg rule create \
   --resource-group $resourceGroup \
   --nsg-name myNSGBackEnd \
   --name SSH \
@@ -88,7 +88,7 @@ az vm extension set \
   --vm-name $vmBack \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
-  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back.sh"],"commandToExecute": "./vote-app-config-back.sh"}'
+  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back.sh"],"commandToExecute": "./vote-app-back.sh"}'
 
 # Create front-end
 az vm create \
@@ -101,9 +101,8 @@ az vm create \
   --image UbuntuLTS \
   --generate-ssh-keys
 
- 
- # Front-end NSG rule
- az network nsg rule create \
+# Front-end NSG rule
+az network nsg rule create \
   --resource-group $resourceGroup \
   --nsg-name myNSGFrontEnd \
   --name http \
@@ -118,8 +117,8 @@ az vm create \
 
 # configure front
 az vm extension set \
---resource-group $resourceGroup \
---vm-name $vmFront \
---name customScript \
---publisher Microsoft.Azure.Extensions \
---settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-front.sh"],"commandToExecute": "./vote-app-front.sh"}'
+  --resource-group $resourceGroup \
+  --vm-name $vmFront \
+  --name customScript \
+  --publisher Microsoft.Azure.Extensions \
+  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-front.sh"],"commandToExecute": "./vote-app-front.sh"}'
