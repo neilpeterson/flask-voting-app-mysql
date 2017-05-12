@@ -14,8 +14,8 @@ sudo pip install gunicorn
 
 # Get app and position config files
 sudo git clone https://github.com/neilpeterson/flask-voting-app.git /opt/vote-app
-sudo cp /opt/vote-app/deployment/custom-script/default /etc/nginx/sites-available/
-sudo cp /opt/vote-app/deployment/custom-script/supervisor-config.conf /etc/supervisor/conf.d/
+sudo cp /opt/vote-app/deployment/default /etc/nginx/sites-available/
+sudo cp /opt/vote-app/deployment/supervisor-config.conf /etc/supervisor/conf.d/
 
 # Initial application start
 sudo supervisorctl reread
