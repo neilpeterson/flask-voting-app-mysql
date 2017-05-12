@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # VM values
-resourceGroup="myResourceGroup2"
-vmFront="vmfront2"
-vmBack="vmback2"
+resourceGroup="myResourceGroup"
+vmFront="vmfront"
+vmBack="vmback"
 
 # Create resource group
 az group create --name $resourceGroup --location eastus
@@ -88,7 +88,7 @@ az vm extension set \
   --vm-name $vmBack \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
-  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/custom-script/vote-app-back.sh"],"commandToExecute": "./vote-app-back.sh"}'
+  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/custom-script/vote-app-config-back.sh"],"commandToExecute": "./vote-app-config-back.sh"}'
 
 # Create front-end
 az vm create \
