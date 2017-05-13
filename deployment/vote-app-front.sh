@@ -3,6 +3,7 @@
 # Configuration values
 user=$1
 password=$2
+ip=$3
 
 # Install software
 sudo apt-get update -y
@@ -24,6 +25,7 @@ sudo cp /opt/vote-app/deployment/supervisor-config.conf /etc/supervisor/conf.d/
 # Update Azure vote config file
 sed -i "s/<user>/$user/g" /opt/vote-app/config_file.cfg
 sed -i "s/<password>/$password/g" /opt/vote-app/config_file.cfg
+sed -i "s/<ip>/$ip/g" /opt/vote-app/config_file.cfg
 
 # Initial application start
 sudo supervisorctl reread

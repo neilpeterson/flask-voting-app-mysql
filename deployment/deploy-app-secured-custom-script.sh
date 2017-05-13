@@ -120,6 +120,10 @@ az network nsg rule create \
   --destination-address-prefix "*" \
   --destination-port-range "80" 
 
+
+# Get internal IP address of MySQL VM
+ip=$(az vm list-ip-addresses --resource-group $resourceGroup --name $vmBack --query [0].virtualMachine.network.privateIpAddresses[0] -o tsv)
+
 # configure front
 az vm extension set \
   --resource-group $resourceGroup \
@@ -127,4 +131,4 @@ az vm extension set \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
   --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-front.sh"]}' \
-  --protected-settings '{"commandToExecute": "./vote-app-front.sh '$user' '$password'"}'
+  --protected-settings '{"commandToExecute": "./vote-app-front.sh '$user' '$password' '$ip'"}'
