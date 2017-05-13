@@ -5,7 +5,7 @@ user="dbuser"
 password="Password12"
 
 # VM values
-resourceGroup="myResourceGroup"
+resourceGroup="myResourceGroup2"
 vmFront="vmfront"
 vmBack="vmback"
 
@@ -92,7 +92,8 @@ az vm extension set \
   --vm-name $vmBack \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
-  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back.sh"],"commandToExecute": "./vote-app-back.sh '$user' '$password'"}'
+  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back.sh"]}' \
+  --protected-settings '{"commandToExecute": "./vote-app-back.sh '$user' '$password'"}'
 
 # Create front-end
 az vm create \
@@ -125,4 +126,5 @@ az vm extension set \
   --vm-name $vmFront \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
-  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-front.sh"],"commandToExecute": "./vote-app-front.sh '$user' '$password'"}'
+  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-front.sh"]}' \
+  --protected-settings '{"commandToExecute": "./vote-app-front.sh '$user' '$password'"}'
