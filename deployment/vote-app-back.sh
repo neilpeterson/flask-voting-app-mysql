@@ -4,6 +4,9 @@
 user=$1
 password=$2
 
+echo $user
+echo $password
+
 # Install MySQL
 sudo apt-get update
 echo "mysql-server mysql-server/root_password password $password" | sudo debconf-set-selections
