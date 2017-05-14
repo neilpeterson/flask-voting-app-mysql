@@ -86,7 +86,7 @@ az vm create \
   --image UbuntuLTS \
   --generate-ssh-keys
 
-# configure back
+# Configure back-end
 az vm extension set \
   --resource-group $resourceGroup \
   --vm-name $vmBack \
@@ -120,11 +120,10 @@ az network nsg rule create \
   --destination-address-prefix "*" \
   --destination-port-range "80" 
 
-
 # Get internal IP address of MySQL VM
 ip=$(az vm list-ip-addresses --resource-group $resourceGroup --name $vmBack --query [0].virtualMachine.network.privateIpAddresses[0] -o tsv)
 
-# configure front
+# Configure front-end
 az vm extension set \
   --resource-group $resourceGroup \
   --vm-name $vmFront \

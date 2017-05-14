@@ -95,40 +95,52 @@ az vm extension set \
   --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back.sh"]}' \
   --protected-settings '{"commandToExecute": "./vote-app-back.sh '$user' '$password'"}'
 
-# Create front-end
-az vm create \
-  --resource-group $resourceGroup \
-  --name $vmFront \
-  --vnet-name myVnet \
-  --subnet mySubnetFrontEnd \
-  --nsg myNSGFrontEnd \
-  --public-ip-address myFrontEndIP \
-  --image UbuntuLTS \
-  --generate-ssh-keys
+# # Create front-end
+# az vm create \
+#   --resource-group $resourceGroup \
+#   --name $vmFront \
+#   --vnet-name myVnet \
+#   --subnet mySubnetFrontEnd \
+#   --nsg myNSGFrontEnd \
+#   --public-ip-address myFrontEndIP \
+#   --image UbuntuLTS \
+#   --generate-ssh-keys
 
-# Front-end NSG rule
-az network nsg rule create \
-  --resource-group $resourceGroup \
-  --nsg-name myNSGFrontEnd \
-  --name http \
-  --access Allow \
-  --protocol Tcp \
-  --direction Inbound \
-  --priority 100 \
-  --source-address-prefix "*" \
-  --source-port-range "*" \
-  --destination-address-prefix "*" \
-  --destination-port-range "80" 
+# # Front-end NSG rule
+# az network nsg rule create \
+#   --resource-group $resourceGroup \
+#   --nsg-name myNSGFrontEnd \
+#   --name http \
+#   --access Allow \
+#   --protocol Tcp \
+#   --direction Inbound \
+#   --priority 100 \
+#   --source-address-prefix "*" \
+#   --source-port-range "*" \
+#   --destination-address-prefix "*" \
+#   --destination-port-range "80" 
 
 
-# Get internal IP address of MySQL VM
-ip=$(az vm list-ip-addresses --resource-group $resourceGroup --name $vmBack --query [0].virtualMachine.network.privateIpAddresses[0] -o tsv)
+# # Get internal IP address of MySQL VM
+# ip=$(az vm list-ip-addresses --resource-group $resourceGroup --name $vmBack --query [0].virtualMachine.network.privateIpAddresses[0] -o tsv)
 
-# configure front
-az vm extension set \
-  --resource-group $resourceGroup \
-  --vm-name $vmFront \
-  --name customScript \
-  --publisher Microsoft.Azure.Extensions \
-  --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-front.sh"]}' \
-  --protected-settings '{"commandToExecute": "./vote-app-front.sh '$user' '$password' '$ip'"}'
+# # configure front
+# az vm extension set \
+#   --resource-group $resourceGroup \
+#   --vm-name $vmFront \
+#   --name customScript \
+#   --publisher Microsoft.Azure.Extensions \
+#   --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-front.sh"]}' \
+#   --protected-settings '{"commandToExecute": "./vote-app-front.sh '$user' '$password' '$ip'"}'
+
+ssh=$(cat ~/.ssh/id_rsa.pub)
+sed -i "s/<replacessh>/$ssh/g" docker-swarm-parameters.json
+
+
+# Deploy docker swarm
+az group deployment create \
+  --name dockertest \
+  --resource-group dockertest \
+  --template-uri https://download.docker.com/azure/stable/Docker.tmpl \
+  --parameters @docker-swarm-parameters.json \
+  --parameters "{"sshPublicKey": {"value": "$ssh"},{"adServicePrincipalAppID": {"value": "$appId"},{"adServicePrincipalAppSecret": {"value": "$appSecret"}}"

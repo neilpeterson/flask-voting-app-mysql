@@ -5,7 +5,7 @@ user="dbuser"
 password="Password12"
 
 # VM values
-resourceGroup="myResourceGroup3"
+resourceGroup="myResourceGroup"
 vmssName="frontvmss"
 vmBack="vmback"
 
@@ -35,19 +35,6 @@ az network vnet subnet update \
   --vnet-name myVnet \
   --name mySubnetBackEnd \
   --network-security-group myNSGBackEnd
-
-az network nsg rule create \
-  --resource-group $resourceGroup \
-  --nsg-name myNSGBackEnd \
-  --name SSH \
-  --access Allow \
-  --protocol Tcp \
-  --direction Inbound \
-  --priority 100 \
-  --source-address-prefix 10.0.1.0/24 \
-  --source-port-range "*" \
-  --destination-address-prefix "*" \
-  --destination-port-range "22" 
 
 az network nsg rule create \
   --resource-group $resourceGroup \
@@ -86,7 +73,7 @@ az vm create \
   --image UbuntuLTS \
   --generate-ssh-keys
 
-# configure back
+# Configure back-end
 az vm extension set \
   --resource-group $resourceGroup \
   --vm-name $vmBack \
@@ -95,27 +82,36 @@ az vm extension set \
   --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back.sh"]}' \
   --protected-settings '{"commandToExecute": "./vote-app-back.sh '$user' '$password'"}'
 
+# Create front-end vmss
 az vmss create \
   --resource-group $resourceGroup \
   --name $vmssName \
+  --vnet-name myVnet \
+  --subnet mySubnetFrontEnd \
   --image UbuntuLTS \
   --upgrade-policy-mode automatic \
+  --load-balancer myLoadBalancer \
+  --backend-pool-name myBackendPool
   --generate-ssh-keys
 
+# Get front-end ip address
+frontEndIp=$(az network lb frontend-ip list --resource-group $resourceGroup --lb-name myLoadBalancer --query "[0].name" -o tsv)
+
+# Create lb rule for http
 az network lb rule create \
   --resource-group $resourceGroup \
   --name myLoadBalancerRuleWeb \
-  --lb-name frontvmssLB \
-  --backend-pool-name frontvmssLBBEPool \
+  --lb-name myLoadBalancer \
+  --backend-pool-name myBackendPool \
   --backend-port 80 \
-  --frontend-ip-name loadBalancerFrontEnd \
+  --frontend-ip-name $frontEndIp \
   --frontend-port 80 \
   --protocol tcp
 
 # Get internal IP address of MySQL VM
 ip=$(az vm list-ip-addresses --resource-group $resourceGroup --name $vmBack --query [0].virtualMachine.network.privateIpAddresses[0] -o tsv)
 
-# configure front
+# Configure front-end
 az vmss extension set \
   --resource-group $resourceGroup \
   --vmss-name $vmssName \
