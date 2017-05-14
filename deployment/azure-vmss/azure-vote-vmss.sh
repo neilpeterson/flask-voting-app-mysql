@@ -5,8 +5,8 @@ user="dbuser"
 password="Password12"
 
 # VM values
-resourceGroup="myResourceGroup"
-vmFront="vmfront"
+resourceGroup="myResourceGroup3"
+vmssName="frontvmss"
 vmBack="vmback"
 
 # Create resource group
@@ -95,39 +95,30 @@ az vm extension set \
   --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-back.sh"]}' \
   --protected-settings '{"commandToExecute": "./vote-app-back.sh '$user' '$password'"}'
 
-# Create front-end
-az vm create \
+az vmss create \
   --resource-group $resourceGroup \
-  --name $vmFront \
-  --vnet-name myVnet \
-  --subnet mySubnetFrontEnd \
-  --nsg myNSGFrontEnd \
-  --public-ip-address myFrontEndIP \
+  --name $vmssName \
   --image UbuntuLTS \
+  --upgrade-policy-mode automatic \
   --generate-ssh-keys
 
-# Front-end NSG rule
-az network nsg rule create \
+az network lb rule create \
   --resource-group $resourceGroup \
-  --nsg-name myNSGFrontEnd \
-  --name http \
-  --access Allow \
-  --protocol Tcp \
-  --direction Inbound \
-  --priority 100 \
-  --source-address-prefix "*" \
-  --source-port-range "*" \
-  --destination-address-prefix "*" \
-  --destination-port-range "80" 
-
+  --name myLoadBalancerRuleWeb \
+  --lb-name frontvmssLB \
+  --backend-pool-name frontvmssLBBEPool \
+  --backend-port 80 \
+  --frontend-ip-name loadBalancerFrontEnd \
+  --frontend-port 80 \
+  --protocol tcp
 
 # Get internal IP address of MySQL VM
 ip=$(az vm list-ip-addresses --resource-group $resourceGroup --name $vmBack --query [0].virtualMachine.network.privateIpAddresses[0] -o tsv)
 
 # configure front
-az vm extension set \
+az vmss extension set \
   --resource-group $resourceGroup \
-  --vm-name $vmFront \
+  --vmss-name $vmssName \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
   --settings '{"fileUris": ["https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/vote-app-front.sh"]}' \
