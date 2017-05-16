@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+     "enableSystemPrune": {
+         "value": "yes"
+     },
+     "managerCount": {
+         "value": 1
+     },
+     "managerVMSize": {
+         "value": "Standard_D2_v2"
+     },
+     "swarmName": {
+         "value": "dockerswarm"
+     },
+     "workerCount": {
+         "value": 3
+     },
+     "workerVMSize": {
+         "value": "Standard_D2_v2"
+     },
+     "sshPublicKey": {
+         "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAwmWm6Qu2zrXA/IC1ufPc2aKTYZCiCg9WoXSi0fPiA5GVMijKFLRLER5pQMHZU1eaJujgBN6fIPJCxKLGFc2qrzrT62hA/Kqq9RvoZdomdKGvDEtM1xNB8iLu95RzsBOriTHUKd58ybaXF9ggR6wRNTUEASZDIGiZ9dXYHqnYbX9XRLRtgGYk5aauhwN7KJyDsDuhHBkIUMwpUQnkB2SmTd2cl3IRNbX1rBVhTHzw/rzhvxVH5KxSpHux0UpaxXBNT2U+UJ8dyEnEL8lQPiLkxasKPorGPE7MmjmCXO0g0NVGkvJMrH9rCtpr143M81jARN/EKhFNaKruoT7JbZMD"
+     },
+     "adServicePrincipalAppID": {
+         "value": "rJrbkJrik0+6gVjrGazKPU9jAF1fIlEI53lbkLVqAvY="
+     },
+     "adServicePrincipalAppSecret": {
+         "value": "rJrbkJrik0+6gVjrGazKPU9jAF1fIlEI53lbkLVqAvY="
+     }
+  }
+}
