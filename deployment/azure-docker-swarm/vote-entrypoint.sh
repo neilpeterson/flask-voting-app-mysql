@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Update Azure vote config file
 sed -i "s/<user>/$1/g" /opt/vote-app/config_file.cfg
 sed -i "s/<password>/$2/g" /opt/vote-app/config_file.cfg
