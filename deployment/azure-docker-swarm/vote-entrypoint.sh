@@ -4,9 +4,9 @@ sed -i "s/<password>/$2/g" /opt/vote-app/config_file.cfg
 sed -i "s/<ip>/$3/g" /opt/vote-app/config_file.cfg
 
 # Initial application start
-sudo supervisorctl reread
-sudo supervisorctl update
-sudo supervisorctl start azurevote
+supervisorctl reread
+supervisorctl update
+supervisorctl start azurevote
 
 # Reload NGINX
-sudo nginx -s reload
+nginx -s reload

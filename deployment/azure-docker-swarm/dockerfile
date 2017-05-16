@@ -12,3 +12,5 @@ RUN apt-get update && \
   git clone https://github.com/neilpeterson/flask-voting-app.git /opt/vote-app && \
   cp /opt/vote-app/deployment/default /etc/nginx/sites-available/ && \
   cp /opt/vote-app/deployment/supervisor-config.conf /etc/supervisor/conf.d/
+
+ENTRYPOINT bash /otp/vote-app/deployment/azure-docker-swarm/vote-entrypoint 
