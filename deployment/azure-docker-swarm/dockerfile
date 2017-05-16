@@ -13,4 +13,4 @@ RUN apt-get update && \
   cp /opt/vote-app/deployment/default /etc/nginx/sites-available/ && \
   cp /opt/vote-app/deployment/supervisor-config.conf /etc/supervisor/conf.d/
 
-ENTRYPOINT bash /otp/vote-app/deployment/azure-docker-swarm/vote-entrypoint 
+ENTRYPOINT ["/opt/vote-app/deployment/azure-docker-swarm/vote-entrypoint.sh"]
