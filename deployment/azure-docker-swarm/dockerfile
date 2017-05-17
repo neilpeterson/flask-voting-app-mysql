@@ -14,5 +14,5 @@ RUN git clone https://github.com/neilpeterson/flask-voting-app.git /opt/vote-app
   cp /opt/vote-app/deployment/default /etc/nginx/sites-available/ && \
   cp /opt/vote-app/deployment/azure-docker-swarm/supervisor-config-docker.conf /etc/supervisor/conf.d/supervisord.conf
 
-ENTRYPOINT["/opt-vote/deployment/azure-docker-swarm/vote-front-boot.sh"]
+ENTRYPOINT ["/opt-vote/deployment/azure-docker-swarm/vote-front-boot.sh"]
 CMD []
