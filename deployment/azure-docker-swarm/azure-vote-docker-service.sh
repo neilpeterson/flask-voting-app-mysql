@@ -7,7 +7,7 @@ password="Password12"
 # VM values
 resourceGroup="myswarm"
 vmFront="vmfront"
-vmBack="vmback"
+vmBack="mysql"
 
 # Create resource group
 az group create --name $resourceGroup --location eastus
