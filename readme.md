@@ -20,7 +20,7 @@ Sample on Virtual Machine Scale Set
 curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh| bash
 ```
 
-Sample in Docker Swarm Mode
+Sample in Docker Swarm Mode - [more information](./deployment/azure-docker-swarm)
 
 ```
 curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-docker-swarm/azure-vote-docker-service.sh | bash
