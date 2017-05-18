@@ -5,7 +5,7 @@ user="dbuser"
 password="Password12"
 
 # VM values
-resourceGroup="myResourceGroup"
+resourceGroup="myResourceGroupVMSS"
 vmssName="frontvmss"
 vmBack="vmback"
 

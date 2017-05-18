@@ -8,12 +8,23 @@ Simple Flask app for demonstrating Azure IaaS architectural configurations. The 
 
 Sample deployment scripts and cloud-init files are found in the deployment folder.
 
-Run these commands to deploy to your Azure subscription.
+Sample on Virtual Machines
 
 ```
-``` 
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh| bash
+```
 
-When deploying, the password value can be stored in Azure Key vault for maximum security. This configuration is not demonstrated in the deployment scripts. 
+Sample on Virtual Machine Scale Set
+
+```
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh| bash
+```
+
+Sample in Docker Swarm Mode
+
+```
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-docker-swarm/azure-vote-docker-service.sh | bash
+```
 
 ## Configuration
 
