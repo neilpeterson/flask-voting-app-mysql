@@ -8,13 +8,13 @@ Simple Flask app for demonstrating Azure IaaS architectural configurations. The 
 
 Sample deployment scripts and cloud-init files are found in the deployment folder.
 
-Sample on Virtual Machines
+Sample on Virtual Machines - [more information](./deployment/azure-vm)
 
 ```
 curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh| bash
 ```
 
-Sample on Virtual Machine Scale Set
+Sample on Virtual Machine Scale Set - [more information](./deployment/azure-vmss)
 
 ```
 curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh| bash
