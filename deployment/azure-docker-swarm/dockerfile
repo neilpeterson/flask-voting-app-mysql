@@ -12,9 +12,8 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/neilpeterson/flask-voting-app.git /opt/vote-app && \
     cp /opt/vote-app/deployment/default /etc/nginx/sites-available/ && \
-    cp /opt/vote-app/deployment/supervisor-config.conf /etc/supervisor/conf.d/supervisord.conf
-    
-RUN chmod +x /opt/vote-app/deployment/azure-docker-swarm/vote-front-boot.sh
+    cp /opt/vote-app/deployment/supervisor-config.conf /etc/supervisor/conf.d/supervisord.conf && \    
+    chmod +x /opt/vote-app/deployment/azure-docker-swarm/vote-front-boot.sh
 
 ENTRYPOINT ["/opt/vote-app/deployment/azure-docker-swarm/vote-front-boot.sh"]
 CMD []
