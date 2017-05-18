@@ -4,9 +4,39 @@ Simple Flask app for demonstrating Azure IaaS architectural configurations. The 
 
 ![](./readme-media/vote-app.png)
 
-## Deployment
+## Configuration
 
-Sample deployment scripts and cloud-init files are found in the deployment folder.
+The `config_file.cfg` can be found at the root of the repo. This file is used to configure the MySQL connection string and basic UI settings.
+
+Sample File:
+
+```
+# MySql Configuration
+MYSQL_DATABASE_USER = 'dbuser'
+MYSQL_DATABASE_PASSWORD = 'Password12'
+MYSQL_DATABASE_DB = 'azurevote'
+MYSQL_DATABASE_HOST = '10.0.0.5'
+
+# UI Configurations
+TITLE = 'Azure Voting App'
+VOTE1VALUE = 'Cats'
+VOTE2VALUE = 'Dogs'
+SHOWHOST = 'false'
+```
+
+UI Configuration:
+
+| Configuration | Description |
+|----|----|
+| TITLE | Title to be displayed in app and on title bar. |
+| VOTE1VALUE | This value will display as the first voting option. |
+| VOTE2VALUE| This value will display as the second voting option. |
+| SHOWHOST | If set to true, the title will be replaced with the name of the system or container hosting the application.  |
+
+
+## Samples Deployment
+
+Sample deployment scripts are found in the deployment folder.
 
 Sample on Virtual Machines - [more information](./deployment/azure-vm)
 
@@ -24,29 +54,4 @@ Sample in Docker Swarm Mode - [more information](./deployment/azure-docker-swarm
 
 ```
 curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-docker-swarm/azure-vote-docker-service.sh | bash
-```
-
-## Configuration
-
-The `config_file.cfg` can be found at the root of the repo. This file can be used to configure MySQL connection string and basic UI settings.
-
-| Configuration | Description |
-|----|----|
-| TITLE | Title to be displayed in app and on title bar. |
-| VOTE1VALUE | This value will display as the first voting option. |
-| VOTE2VALUE| This value will display as the second voting option. |
-| SHOWHOST | If set to true, the title will be replaced with the name of the system or container hosting the application.  |
-
-```
-# MySql Configuration
-MYSQL_DATABASE_USER = 'dbuser'
-MYSQL_DATABASE_PASSWORD = 'Password12'
-MYSQL_DATABASE_DB = 'azurevote'
-MYSQL_DATABASE_HOST = '10.0.0.5'
-
-# UI Configurations
-TITLE = 'Azure Voting App'
-VOTE1VALUE = 'Cats'
-VOTE2VALUE = 'Dogs'
-SHOWHOST = 'false'
 ```
