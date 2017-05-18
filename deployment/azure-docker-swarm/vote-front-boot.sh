@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Configuration values
 user=$1
 password=$2
