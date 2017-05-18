@@ -5,7 +5,7 @@ user="dbuser"
 password="Password12"
 
 # VM values
-resourceGroup="myResourceGroupSwarm"
+resourceGroup="myResourceGroupSwarm3"
 vmBack="vmback"
 
 # Create resource group
@@ -33,19 +33,6 @@ az network nsg create --resource-group $resourceGroup --name myNSGBackEnd
 az network nsg rule create \
   --resource-group $resourceGroup \
   --nsg-name myNSGBackEnd \
-  --name SSH \
-  --access Allow \
-  --protocol Tcp \
-  --direction Inbound \
-  --priority 100 \
-  --source-address-prefix 10.0.0.0/8 \
-  --source-port-range "*" \
-  --destination-address-prefix "*" \
-  --destination-port-range "22" 
-
-az network nsg rule create \
-  --resource-group $resourceGroup \
-  --nsg-name myNSGBackEnd \
   --name MySQL \
   --access Allow \
   --protocol Tcp \
@@ -69,16 +56,23 @@ az network nsg rule create \
   --destination-address-prefix "*" \
   --destination-port-range "*"
 
-# Create back-end vm
+# Create back-end subnet
 vnet=$(az network vnet list --resource-group $resourceGroup --query [0].['name'] -o tsv)
 
+az network vnet subnet create \
+  --resource-group $resourceGroup \
+  --vnet-name $vnet \
+  --name mySubnetBackEnd \
+  --address-prefix 172.16.0.0/24 \
+  --network-security-group myNSGBackEnd
+
+# Create back-end vm
 az vm create \
   --resource-group $resourceGroup \
   --name $vmBack \
   --vnet-name $vnet \
-  --subnet VM \
+  --subnet mySubnetBackEnd \
   --public-ip-address "" \
-  --nsg "myNSGBackEnd" \
   --image UbuntuLTS \
   --generate-ssh-keys
 
