@@ -89,6 +89,6 @@ az vm extension set \
 ip=$(az network public-ip list --query "[?contains(name, 'dockerswarm-externalSSHLoadBalancer-public-ip')].[ipAddress]" -o tsv)
 backendip=$(az vm list-ip-addresses --resource-group $resourceGroup --name $vmBack --query "[0].[virtualMachine.network.privateIpAddresses[0]]" -o tsv)
 ssh -o "StrictHostKeyChecking no" -p 50000 -fNL localhost:2374:/var/run/docker.sock docker@$ip
-docker -H localhost:2374 service create --name demoService -p 83:80 --replicas=2 neilpeterson/azure-vote-front $user $password $backendip
+docker -H localhost:2374 service create --name demoService -p 80:80 --replicas=2 neilpeterson/azure-vote-front $user $password $backendip
 
 echo "Run 'docker -H localhost:2374 service ls' to see service status"
