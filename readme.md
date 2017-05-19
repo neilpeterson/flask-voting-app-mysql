@@ -36,22 +36,22 @@ UI Configuration:
 
 ## Samples Deployment
 
-Sample deployment scripts are found in the deployment folder.
+Sample deployment scripts are found in the deployment folder. To deploy any of these, copy the command and run in a bash shell.
 
 Sample on Virtual Machines - [more information](./deployment/azure-vm)
 
 ```
-curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh| bash
+curl http://bit.ly/2pRhDYD | bash
 ```
 
 Sample on Virtual Machine Scale Set - [more information](./deployment/azure-vmss)
 
 ```
-curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh| bash
+curl http://bit.ly/2pRhDYD | bash
 ```
 
 Sample in Docker Swarm Mode - [more information](./deployment/azure-docker-swarm)
 
 ```
-curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-docker-swarm/azure-vote-docker-service.sh | bash
+curl http://bit.ly/2qXZ997 | bash
 ```

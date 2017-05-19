@@ -20,5 +20,5 @@ This example completes the following:
 Run the following command to deploy this example.
 
 ```
-curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-docker-swarm/azure-vote-docker-service.sh | bash
+curl http://bit.ly/2qXZ997 | bash
 ```
