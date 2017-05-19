@@ -50,7 +50,7 @@ curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/depl
 **Virtual Machine Scale Set** - [more information](./deployment/azure-vmss).
 
 ```
-curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh | bash
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vmss/azure-vote-vmss.sh | bash
 ```
 
 **Docker Swarm Mode** - [more information](./deployment/azure-docker-swarm).
