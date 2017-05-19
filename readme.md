@@ -36,22 +36,25 @@ UI Configuration:
 
 ## Samples Deployment
 
-Sample deployment scripts are found in the deployment folder. To deploy any of these, copy the command and run in a bash shell.
+Prerequisites:
 
-Sample on Virtual Machines - [more information](./deployment/azure-vm)
+- Azure CLI 2.0 installed and `az login` has been run.
+- For any samples that include Docker, the Docker client is required.
 
-```
-curl http://bit.ly/2pRhDYD | bash
-```
-
-Sample on Virtual Machine Scale Set - [more information](./deployment/azure-vmss)
+**Virtual Machines** - [more information](./deployment/azure-vm).
 
 ```
-curl http://bit.ly/2pRhDYD | bash
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh | bash
 ```
 
-Sample in Docker Swarm Mode - [more information](./deployment/azure-docker-swarm)
+**Virtual Machine Scale Set** - [more information](./deployment/azure-vmss).
 
 ```
-curl http://bit.ly/2qXZ997 | bash
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh | bash
+```
+
+**Docker Swarm Mode** - [more information](./deployment/azure-docker-swarm).
+
+```
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-docker-swarm/azure-vote-docker-service.sh | bash
 ```

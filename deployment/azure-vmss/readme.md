@@ -11,5 +11,5 @@ This example completes the following:
 Run the following command to deploy this example.
 
 ```
-curl http://bit.ly/2pRhDYD | bash
+curl https://raw.githubusercontent.com/neilpeterson/flask-voting-app/master/deployment/azure-vm/azure-vote-vm.sh | bash
 ```
