@@ -91,7 +91,7 @@ az vmss create \
   --image UbuntuLTS \
   --upgrade-policy-mode automatic \
   --load-balancer myLoadBalancer \
-  --backend-pool-name myBackendPool
+  --backend-pool-name myBackendPool \
   --generate-ssh-keys
 
 # Get front-end ip address
